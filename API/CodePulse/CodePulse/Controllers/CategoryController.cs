@@ -17,9 +17,28 @@ namespace CodePulse.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        //
-        [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreateCategoryRequestDto request)
+        [HttpGet("GetCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var categories = await categoryRepository.GetCategories();
+            return Ok(categories);
+        }
+
+        [HttpGet("GetCategoryById")]
+        public async Task<IActionResult> GetCategoryById(Guid id)
+        {
+            var category = await categoryRepository.GetCategoryById(id);
+
+            if(category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
+        }
+
+        [HttpPost("AddCategory")]
+        public async Task<IActionResult> AddCategory(CreateCategoryRequestDto request)
         {
             // Map DTO to Domain Model
             var category = new Category
@@ -28,7 +47,7 @@ namespace CodePulse.Controllers
                 UrlHandle=request.UrlHandle
             };
 
-            await categoryRepository.CreateAsync(category);
+            await categoryRepository.AddCategory(category);
 
             var response = new CategoryDto
             {
@@ -40,5 +59,32 @@ namespace CodePulse.Controllers
             return Ok(response);
 
         }
+
+        [HttpPut("UpdateCategory")]
+        public async Task<IActionResult> UpdateCategory(Category category)
+        {
+            var updatedCategory = await categoryRepository.UpdateCategory(category);
+
+            if(updatedCategory == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedCategory);
+        }
+
+        [HttpDelete("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory(Guid id)
+        {
+            var success = await categoryRepository.DeleteCategory(id);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return Ok(success);
+        }
+
     }
 }
