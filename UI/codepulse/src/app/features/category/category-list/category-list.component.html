@@ -3,4 +3,27 @@
     <div class="d-flex justify-content-end mt-3">
         <a [routerLink]="['/admin/categories/add']" class="btn btn-primary">Add Category</a>
     </div>
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>URL Handle</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categories">
+              <td>{{category.id}}</td>
+              <td>{{category.name}}</td>
+              <td>{{category.urlHandle}}</td>
+              <td>
+                <a [routerLink]="['/admin/categories/delete', category.id]" class="btn btn-danger">Delete</a>
+                <a [routerLink]="['/admin/categories/edit', category.id]" class="btn btn-success" style="margin-left: 5px;">Edit</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 </div>
