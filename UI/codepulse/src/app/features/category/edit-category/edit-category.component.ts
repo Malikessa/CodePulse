@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { Subscription } from 'rxjs';
 import { UpdateCategoryRequest } from '../edit-category.models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-category',
@@ -22,7 +22,8 @@ export class EditCategoryComponent {
 
   constructor(
     private categoryService: CategoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +43,7 @@ export class EditCategoryComponent {
       .subscribe({
         next: (response) => {
           console.log('Update was successful!');
+          this.router.navigate(['/admin/categories']);
         },
         error: (err) => {
           console.error('Failed to update category', err);
