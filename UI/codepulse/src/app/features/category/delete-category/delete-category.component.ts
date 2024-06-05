@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UpdateCategoryRequest } from '../edit-category.models';
 import { Subscription } from 'rxjs';
 import { CategoryService } from '../services/category.service';
@@ -9,14 +9,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './delete-category.component.html',
   styleUrls: ['./delete-category.component.css']
 })
-export class DeleteCategoryComponent {
+export class DeleteCategoryComponent implements OnInit,OnDestroy {
   model: UpdateCategoryRequest = {
     id: '',
     name: '',
     urlHandle: ''
   };
 
-  private editCategorySubscription?: Subscription;
+  private deleteCategorySubscription?: Subscription;
   private routeSubscription?: Subscription;
 
   constructor(
@@ -24,6 +24,11 @@ export class DeleteCategoryComponent {
     private route: ActivatedRoute,
     private router : Router
   ) { }
+
+  ngOnDestroy(): void {
+    this.deleteCategorySubscription?.unsubscribe();
+    this.routeSubscription?.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(params => {
@@ -38,8 +43,7 @@ export class DeleteCategoryComponent {
   }
 
   onConfirm(): void {
-    // Add your deletion logic here
-    this.categoryService.deleteCategory(this.model.id).subscribe(() => {
+    this.deleteCategorySubscription = this.categoryService.deleteCategory(this.model.id).subscribe(() => {
       this.router.navigate(['/admin/categories']);
     });
   }
