@@ -49,7 +49,7 @@ namespace CodePulse.Controllers
 
             await categoryRepository.AddCategory(category);
 
-            var response = new CategoryDto
+            var response = new CategoryResponseDto
             {
                 Id = category.Id,
                 Name = category.Name,
