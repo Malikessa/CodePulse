@@ -1,2 +1,2 @@
 # CodePulse
-A Web Application Using Angular 17 and .NET 7
+A Web Application Using Angular 16 and .NET 6
